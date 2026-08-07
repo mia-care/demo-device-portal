@@ -1,0 +1,7 @@
+# Ownership — consumed by the Catalog to build Ownership relationships and to
+# satisfy the SOC 2 "every service has an owner" evaluation criterion.
+*                       @mia-care/inogen-field-services
+/services/devices-api/      @mia-care/inogen-field-services
+/services/maintenance-api/  @mia-care/inogen-field-services
+/services/web-portal/       @mia-care/inogen-field-services
+/services/bff/              @mia-care/inogen-field-services

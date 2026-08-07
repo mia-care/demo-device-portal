@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - web-portal.yaml
+  - bff.yaml
+  - devices-api.yaml
+  - maintenance-api.yaml
+commonLabels:
+  app.kubernetes.io/part-of: inogen-device-portal

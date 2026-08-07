@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintenance-api
+  labels:
+    app.kubernetes.io/name: maintenance-api
+    app.kubernetes.io/part-of: inogen-device-portal
+    app.kubernetes.io/component: backend
+    mia-platform.eu/data-classification: confidential
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: maintenance-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: maintenance-api
+        app.kubernetes.io/part-of: inogen-device-portal
+        app.kubernetes.io/component: backend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: maintenance-api
+          image: ghcr.io/mia-care/inogen-device-portal/maintenance-apiatest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3002
+          env:
+            - name: PORT
+              value: "3002"
+            - name: LOG_LEVEL
+              value: info
+          resources:
+            requests: { cpu: "150m", memory: "192Mi" }
+            limits: { cpu: "300m", memory: "384Mi" }
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /ready, port: http }
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: maintenance-api
+  labels:
+    app.kubernetes.io/name: maintenance-api
+    app.kubernetes.io/part-of: inogen-device-portal
+spec:
+  selector:
+    app.kubernetes.io/name: maintenance-api
+  ports:
+    - name: http
+      port: 3002
+      targetPort: http
