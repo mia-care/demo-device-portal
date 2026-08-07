@@ -1,6 +1,6 @@
 # Demo Device Portal
 
-A field-service portal for managing the maintenance lifecycle of **Demo portable oxygen concentrators (POCs)**: fleet inventory, filter & sieve-bed replacement schedules, battery health, and service tickets.
+A field-service portal for managing the maintenance lifecycle of **Demo medical devices**: fleet inventory, filter & sieve-bed replacement schedules, battery health, and service tickets.
 
 > This repository simulates a **customer-side application** to be imported into the **Mia-Platform Console (IDP)**. It is a monorepo containing service source, container definitions, Kubernetes manifests, and a Mia-Platform **import descriptor**.
 
