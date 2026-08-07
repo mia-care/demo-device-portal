@@ -1,0 +1,7 @@
+# Ownership — consumed by the Catalog to build Ownership relationships and to
+# satisfy the SOC 2 "every service has an owner" evaluation criterion.
+*                       @mia-care/device-portal-team
+/services/devices-api/      @mia-care/device-portal-team
+/services/maintenance-api/  @mia-care/device-portal-team
+/services/web-portal/       @mia-care/device-portal-team
+/services/bff/              @mia-care/device-portal-team

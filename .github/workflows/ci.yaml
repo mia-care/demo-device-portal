@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build-${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [web-portal, bff, devices-api, maintenance-api]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install
+        working-directory: services/${{ matrix.service }}
+        run: npm install
+      - name: Build (frontend only)
+        if: matrix.service == 'web-portal'
+        working-directory: services/${{ matrix.service }}
+        run: npm run build
+      - name: Syntax check (backends)
+        if: matrix.service != 'web-portal'
+        working-directory: services/${{ matrix.service }}
+        run: node --check src/index.js
+
+  # SOC 2 CC7.1 / CC8.1 — vulnerability scanning of source & dependencies.
+  # A passing run of this job is checked by the Catalog "image scanned" criterion.
+  security-scan:
+    name: dependency-audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "0"   # demo: report but do not fail

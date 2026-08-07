@@ -1,0 +1,189 @@
+# =============================================================================
+# mia-import.yaml — Mia-Platform IDP import descriptor
+# -----------------------------------------------------------------------------
+# This file is the CONTRACT between a customer application repository and the
+# Mia-Platform Console (IDP). The "import" Playbook reads this descriptor to:
+#   1. scaffold a Console Project from a template   (create_project_from_template)
+#   2. register each service into the project config (configuration_save)
+#   3. expose the frontend                           (create_endpoints)
+#   4. deploy to the target cluster                  (deploy_project)
+#
+# The same metadata is ingested by the Mia-Platform Catalog GitHub connector to
+# populate items + relationships and to drive compliance Scorecards (e.g. SOC 2).
+#
+# Keep this file at the repository root. One repository == one ProjectImport.
+# =============================================================================
+apiVersion: import.mia-platform.eu/v1
+kind: ProjectImport
+
+metadata:
+  name: demo-device-portal
+  title: Demo Device Portal
+  description: >-
+    Field-service portal for managing the maintenance lifecycle of Demo
+    portable oxygen concentrators (POCs): fleet inventory, filter & sieve-bed
+    replacement schedules, battery health, and service tickets.
+  # Resolved to a real Console company id at import time by the Playbook.
+  companyId: "${MIA_COMPANY_ID}"
+  # Business + regulatory context. Used verbatim as Catalog item labels/tags.
+  tags:
+    - healthcare
+    - medical-device
+    - portable-oxygen-concentrator
+    - soc2
+  labels:
+    domain: field-services
+    business-unit: patient-care
+    lifecycle: production
+    compliance: soc2-type-ii
+  owner:
+    # Becomes an Ownership relationship in the Catalog.
+    team: device-portal-team
+    email: field-services@demo.example
+
+spec:
+  # ---------------------------------------------------------------------------
+  # Template used to scaffold the Console project. The Playbook resolves
+  # `preferredNames` against the tenant's available templates (list_tenant_templates)
+  # and falls back to the first match. If none match, it creates from a blank template.
+  # ---------------------------------------------------------------------------
+  template:
+    preferredNames:
+      - "nodejs-monorepo"
+      - "kustomize-monorepo"
+      - "Blank Template"
+    workflow: enhanced        # Console Enhanced Project Workflow (env/config/overlays)
+
+  # ---------------------------------------------------------------------------
+  # Git provenance — where the source lives. Consumed by both the Playbook (to
+  # wire service repositories) and the Catalog connector (provenance + links).
+  # ---------------------------------------------------------------------------
+  source:
+    provider: github
+    repository: mia-care/demo-device-portal
+    defaultBranch: main
+    monorepo: true
+
+  # ---------------------------------------------------------------------------
+  # Target runtime environments -> Console environments -> AKS clusters.
+  # clusterId / namespace are resolved/confirmed at import time.
+  # ---------------------------------------------------------------------------
+  environments:
+    - id: dev
+      envPrefix: DEV
+      cluster: demo-aks
+      namespace: demo-device-portal-dev
+    - id: prod
+      envPrefix: PROD
+      cluster: demo-aks
+      namespace: demo-device-portal-prod
+
+  # ---------------------------------------------------------------------------
+  # Services to register in the Console project. Each entry maps 1:1 to a
+  # microservice folder under services/ and to a k8s base manifest under k8s/base.
+  # The fields below are intentionally rich so the SOC 2 Scorecard has real data
+  # to evaluate (ownership, data classification, security, observability).
+  # ---------------------------------------------------------------------------
+  services:
+    - name: web-portal
+      title: Device Maintenance Web Portal
+      type: frontend
+      language: javascript
+      framework: react
+      sourceDirectory: services/web-portal
+      dockerfile: services/web-portal/Dockerfile
+      containerPort: 8080
+      replicas: 2
+      resources:
+        cpu: "100m"
+        memory: "128Mi"
+      expose:
+        # Public endpoint created via create_endpoints.
+        path: /
+        public: true
+      probes:
+        liveness: /healthz
+        readiness: /ready
+      # ---- SOC 2 signal fields ----
+      dataClassification: internal      # none | internal | confidential | restricted
+      handlesPII: false
+      owner: device-portal-team
+      runbook: https://github.com/mia-care/demo-device-portal/blob/main/docs/runbooks/web-portal.md
+      logging: structured-json
+      dependsOn:
+        - bff
+
+    - name: bff
+      title: Backend-for-Frontend Gateway
+      type: backend
+      language: javascript
+      framework: express
+      sourceDirectory: services/bff
+      dockerfile: services/bff/Dockerfile
+      containerPort: 3000
+      replicas: 2
+      resources:
+        cpu: "150m"
+        memory: "192Mi"
+      expose:
+        path: /api
+        public: true
+      probes:
+        liveness: /healthz
+        readiness: /ready
+      dataClassification: internal
+      handlesPII: false
+      owner: device-portal-team
+      runbook: https://github.com/mia-care/demo-device-portal/blob/main/docs/runbooks/bff.md
+      logging: structured-json
+      dependsOn:
+        - devices-api
+        - maintenance-api
+
+    - name: devices-api
+      title: Device Fleet API
+      type: backend
+      language: javascript
+      framework: express
+      sourceDirectory: services/devices-api
+      dockerfile: services/devices-api/Dockerfile
+      containerPort: 3001
+      replicas: 2
+      resources:
+        cpu: "150m"
+        memory: "192Mi"
+      expose:
+        path: /devices
+        public: false                  # internal only, reached through the BFF
+      probes:
+        liveness: /healthz
+        readiness: /ready
+      dataClassification: confidential  # device serials tied to patients
+      handlesPII: true
+      owner: device-portal-team
+      runbook: https://github.com/mia-care/demo-device-portal/blob/main/docs/runbooks/devices-api.md
+      logging: structured-json
+
+    - name: maintenance-api
+      title: Maintenance & Service-Ticket API
+      type: backend
+      language: javascript
+      framework: express
+      sourceDirectory: services/maintenance-api
+      dockerfile: services/maintenance-api/Dockerfile
+      containerPort: 3002
+      replicas: 2
+      resources:
+        cpu: "150m"
+        memory: "192Mi"
+      expose:
+        path: /maintenance
+        public: false
+      probes:
+        liveness: /healthz
+        readiness: /ready
+      dataClassification: confidential
+      handlesPII: true
+      owner: device-portal-team
+      runbook: https://github.com/mia-care/demo-device-portal/blob/main/docs/runbooks/maintenance-api.md
+      logging: structured-json

@@ -1,0 +1,16 @@
+{
+  "name": "devices-api",
+  "version": "1.0.0",
+  "description": "Demo device inventory API (in-memory POC fleet)",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
