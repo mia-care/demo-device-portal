@@ -6,7 +6,7 @@ in-memory fleet of ~8 Demo portable oxygen concentrators (POCs). Device ids
 
 ## Port
 
-`3000` (override with `PORT`).
+`3001` (override with `PORT`).
 
 ## Routes
 
@@ -21,7 +21,7 @@ in-memory fleet of ~8 Demo portable oxygen concentrators (POCs). Device ids
 
 | Var    | Default | Description       |
 | ------ | ------- | ----------------- |
-| `PORT` | `3000`  | HTTP listen port  |
+| `PORT` | `3001`  | HTTP listen port  |
 
 ## Run
 

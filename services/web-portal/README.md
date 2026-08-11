@@ -2,11 +2,11 @@
 
 Single-page app (Vite + React + TypeScript) for the Demo Device Maintenance
 Portal. Built to static files and served by nginx as a non-root user on port
-`3000`. Talks to the BFF via `/api` (nginx proxies `/api` -> `bff:3000`).
+`8080`. Talks to the BFF via `/api` (nginx proxies `/api` -> `bff:3000`).
 
 ## Port
 
-`3000` (nginx).
+`8080` (nginx).
 
 ## Views
 

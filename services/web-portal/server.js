@@ -6,7 +6,7 @@ import { Readable } from 'stream';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const BFF_BASE_URL = process.env.BFF_BASE_URL || 'http://bff:3000';
 const DIST_DIR = path.join(__dirname, 'dist');
 

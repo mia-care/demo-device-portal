@@ -6,7 +6,7 @@ maintenance schedules and service tickets keyed by the same device ids used by
 
 ## Port
 
-`3000` (override with `PORT`).
+`3002` (override with `PORT`).
 
 ## Routes
 
@@ -23,7 +23,7 @@ maintenance schedules and service tickets keyed by the same device ids used by
 
 | Var    | Default | Description      |
 | ------ | ------- | ---------------- |
-| `PORT` | `3000`  | HTTP listen port |
+| `PORT` | `3002`  | HTTP listen port |
 
 ## Run
 

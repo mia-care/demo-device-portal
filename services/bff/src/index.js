@@ -4,9 +4,9 @@ const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DEVICES_API_URL = process.env.DEVICES_API_URL || 'http://devices-api:3000';
+const DEVICES_API_URL = process.env.DEVICES_API_URL || 'http://devices-api:3001';
 const MAINTENANCE_API_URL =
-  process.env.MAINTENANCE_API_URL || 'http://maintenance-api:3000';
+  process.env.MAINTENANCE_API_URL || 'http://maintenance-api:3002';
 
 function log(level, msg, extra = {}) {
   process.stdout.write(

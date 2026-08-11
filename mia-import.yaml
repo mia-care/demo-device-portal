@@ -92,7 +92,7 @@ spec:
       framework: react
       sourceDirectory: services/web-portal
       dockerfile: services/web-portal/Dockerfile
-      containerPort: 3000
+      containerPort: 8080
       replicas: 2
       resources:
         cpu: "100m"
@@ -147,7 +147,7 @@ spec:
       framework: express
       sourceDirectory: services/devices-api
       dockerfile: services/devices-api/Dockerfile
-      containerPort: 3000
+      containerPort: 3001
       replicas: 2
       resources:
         cpu: "150m"
@@ -171,7 +171,7 @@ spec:
       framework: express
       sourceDirectory: services/maintenance-api
       dockerfile: services/maintenance-api/Dockerfile
-      containerPort: 3000
+      containerPort: 3002
       replicas: 2
       resources:
         cpu: "150m"

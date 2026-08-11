@@ -26,6 +26,6 @@ COPY --from=build /app/dist ./dist
 # Non-root; the container is expected to run with a read-only root filesystem.
 USER node
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["node", "server.js"]

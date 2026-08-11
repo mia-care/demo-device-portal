@@ -1,6 +1,6 @@
 # Runbook — devices-api
 
-**Service:** `devices-api` · **Port:** 3000 · **Owner:** @mia-care/device-portal-team
+**Service:** `devices-api` · **Port:** 3001 · **Owner:** @mia-care/device-portal-team
 
 ## What it does
 POC fleet inventory. Holds device + patient reference data (confidential).

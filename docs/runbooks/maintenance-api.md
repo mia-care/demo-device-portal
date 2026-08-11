@@ -1,6 +1,6 @@
 # Runbook — maintenance-api
 
-**Service:** `maintenance-api` · **Port:** 3000 · **Owner:** @mia-care/device-portal-team
+**Service:** `maintenance-api` · **Port:** 3002 · **Owner:** @mia-care/device-portal-team
 
 ## What it does
 Maintenance schedules and service tickets (confidential).
