@@ -10,6 +10,6 @@ COPY src ./src
 
 USER node
 
-EXPOSE 3002
+EXPOSE 3000
 
 CMD ["node", "src/index.js"]

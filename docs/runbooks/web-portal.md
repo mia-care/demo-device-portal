@@ -1,6 +1,6 @@
 # Runbook — web-portal
 
-**Service:** `web-portal` · **Port:** 8080 · **Owner:** @mia-care/device-portal-team
+**Service:** `web-portal` · **Port:** 3000 · **Owner:** @mia-care/device-portal-team
 
 ## What it does
 React SPA served by nginx. Talks to the BFF via /api.

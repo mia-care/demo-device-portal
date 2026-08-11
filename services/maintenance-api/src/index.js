@@ -4,7 +4,7 @@ const express = require('express');
 const { schedules, tickets } = require('./data');
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 
 function log(level, msg, extra = {}) {
   process.stdout.write(

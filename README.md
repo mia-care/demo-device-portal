@@ -8,7 +8,7 @@ A field-service portal for managing the maintenance lifecycle of **Demo medical 
 
 ```
                  ┌────────────────┐
- browser  ──────▶│   web-portal   │  React SPA (nginx :8080)
+ browser  ──────▶│   web-portal   │  React SPA (nginx :3000)
                  └───────┬────────┘
                          │ /api
                  ┌───────▼────────┐
@@ -16,16 +16,16 @@ A field-service portal for managing the maintenance lifecycle of **Demo medical 
                  └───┬────────┬───┘
                      │        │
         ┌────────────▼─┐   ┌──▼───────────────┐
-        │ devices-api  │   │ maintenance-api  │  Express :3001 / :3002
+        │ devices-api  │   │ maintenance-api  │  Express :3000 / :3000
         └──────────────┘   └──────────────────┘
 ```
 
 | Service | Type | Port | Data classification | Public |
 |---|---|---|---|---|
-| `web-portal` | frontend (React) | 8080 | internal | ✅ |
+| `web-portal` | frontend (React) | 3000 | internal | ✅ |
 | `bff` | backend (Express) | 3000 | internal | ✅ (`/api`) |
-| `devices-api` | backend (Express) | 3001 | confidential (PII) | ❌ internal |
-| `maintenance-api` | backend (Express) | 3002 | confidential (PII) | ❌ internal |
+| `devices-api` | backend (Express) | 3000 | confidential (PII) | ❌ internal |
+| `maintenance-api` | backend (Express) | 3000 | confidential (PII) | ❌ internal |
 
 ## Repository layout
 

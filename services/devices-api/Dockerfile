@@ -11,6 +11,6 @@ COPY src ./src
 # Run as the non-root user that ships with the node image.
 USER node
 
-EXPOSE 3001
+EXPOSE 3000
 
 CMD ["node", "src/index.js"]
