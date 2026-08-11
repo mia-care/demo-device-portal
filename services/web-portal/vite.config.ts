@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// During local dev, proxy /api to the BFF. In the container, server.js
-// handles the /api proxy instead.
+// During local dev, proxy /api to the BFF. In the container, nginx handles
+// the /api proxy instead.
 export default defineConfig({
   plugins: [react()],
   server: {

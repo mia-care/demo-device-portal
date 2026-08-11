@@ -12,20 +12,19 @@ COPY src ./src
 RUN npm run build
 
 # --- runtime stage ---
-FROM node:20-alpine
+FROM nginx:1.27-alpine
 
-ENV NODE_ENV=production
-WORKDIR /app
+# Serve as the unprivileged "nginx" user that ships with the image.
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+# Ensure writable dirs for the non-root user (pid + temp live under /tmp).
+RUN chown -R nginx:nginx /usr/share/nginx/html \
+    && touch /tmp/nginx.pid \
+    && chown nginx:nginx /tmp/nginx.pid
 
-COPY server.js ./server.js
-COPY --from=build /app/dist ./dist
-
-# Non-root; the container is expected to run with a read-only root filesystem.
-USER node
+USER nginx
 
 EXPOSE 8080
 
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
