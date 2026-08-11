@@ -27,8 +27,8 @@ writes).
 | Var                   | Default                       | Description                 |
 | --------------------- | ----------------------------- | --------------------------- |
 | `PORT`                | `3000`                        | HTTP listen port            |
-| `DEVICES_API_URL`     | `http://devices-api:3001`     | devices-api base URL        |
-| `MAINTENANCE_API_URL` | `http://maintenance-api:3002` | maintenance-api base URL    |
+| `DEVICES_API_URL`     | `http://devices-api:3000`     | devices-api base URL        |
+| `MAINTENANCE_API_URL` | `http://maintenance-api:3000` | maintenance-api base URL    |
 
 ## Run
 

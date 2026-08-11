@@ -30,10 +30,10 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 3002
+              containerPort: 3000
           env:
             - name: PORT
-              value: "3002"
+              value: "3000"
             - name: LOG_LEVEL
               value: info
           resources:
@@ -65,5 +65,5 @@ spec:
     app.kubernetes.io/name: maintenance-api
   ports:
     - name: http
-      port: 3002
+      port: 3000
       targetPort: http

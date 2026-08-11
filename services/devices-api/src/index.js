@@ -4,7 +4,7 @@ const express = require('express');
 const { devices } = require('./data');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Structured JSON logging: one line per request written to stdout.
 function log(level, msg, extra = {}) {
